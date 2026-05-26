@@ -1,9 +1,0 @@
-{
-  "name": "Dark-Website",
-  "version": "1.0.0",
-  "description": "Portfolio website for Micah Okoye",
-  "scripts": {
-    "build": "echo 'Static site - no build needed'"
-  },
-  "dependencies": {}
-}
