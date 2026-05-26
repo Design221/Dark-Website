@@ -10,9 +10,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -20,6 +23,8 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
                     },
                     colors: {
                         brand: {
@@ -28,7 +33,14 @@
                             gray: '#1a1a1a',
                             light: '#f5f5f5',
                             accent: '#ffffff'
-                        }
+                        },
+                        matte: '#0a0a0a',
+                        charcoal: '#141414',
+                        'warm-gray': '#1a1a1a',
+                        'soft-white': '#f5f5f0',
+                        'muted-beige': '#c9c5b8',
+                        metallic: '#8a8680',
+                        accent: '#d4cfc4'
                     },
                     animation: {
                         'fade-up': 'fadeUp 0.8s ease-out forwards',
@@ -52,29 +64,197 @@
     <style>
         body {
             background-color: #0a0a0a;
-            color: #ffffff;
+            color: #f5f5f0;
             overflow-x: hidden;
+            cursor: none;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
+        /* ===== PREMIUM FEATURE 1: Custom Cursor ===== */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 5px;
+            height: 5px;
+            background-color: #f5f5f0;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .cursor-outline {
+            width: 30px;
+            height: 30px;
+            border: 1px solid rgba(245, 245, 240, 0.5);
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+        }
+
+        .cursor-hover .cursor-outline {
+            width: 60px;
+            height: 60px;
+            border-color: rgba(245, 245, 240, 0.8);
+            background-color: rgba(245, 245, 240, 0.05);
+        }
+
+        .cursor-hover .cursor-dot {
             width: 8px;
+            height: 8px;
+            background-color: #c9c5b8;
         }
 
-        ::-webkit-scrollbar-track {
+        /* ===== PREMIUM FEATURE 2: Cinematic Loading Screen ===== */
+        .loader {
+            position: fixed;
+            inset: 0;
             background: #0a0a0a;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 4px;
+        .loader-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: #8a8680;
+            margin-top: 2rem;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        .loader-line {
+            width: 0;
+            height: 1px;
+            background: #c9c5b8;
+            margin-top: 1rem;
         }
 
-        /* Scroll Animation Classes */
+        /* ===== PREMIUM FEATURE 3: Noise Texture Overlay ===== */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9000;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* ===== PREMIUM FEATURE 4: Glassmorphism Navigation ===== */
+        .glass {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(245, 245, 240, 0.05);
+        }
+
+        /* ===== PREMIUM FEATURE 5: Editorial Typography ===== */
+        .editorial-heading {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .architectural-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #8a8680;
+        }
+
+        /* ===== PREMIUM FEATURE 6: Elegant Nav Links ===== */
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #c9c5b8;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* ===== PREMIUM FEATURE 7: Magnetic Button Effect ===== */
+        .magnetic-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .magnetic-btn::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border: 1px solid rgba(201, 197, 184, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .magnetic-btn:hover::before {
+            inset: -4px;
+            border-color: rgba(201, 197, 184, 0.6);
+        }
+
+        /* ===== PREMIUM FEATURE 8: Project Card Cinematic Hover ===== */
+        .project-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card img {
+            transition: transform 1.2s cubic-bezier(0.76, 0, 0.24, 1), filter 0.8s ease;
+            filter: grayscale(30%) brightness(0.8);
+        }
+
+        .project-card:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%) brightness(1);
+        }
+
+        .project-overlay {
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0.3) 50%, transparent 100%);
+        }
+
+        /* ===== PREMIUM FEATURE 9: Service Item Hover ===== */
+        .service-item {
+            border-bottom: 1px solid rgba(245, 245, 240, 0.08);
+            transition: all 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .service-item:hover {
+            padding-left: 2rem;
+            border-color: rgba(201, 197, 184, 0.3);
+        }
+
+        .service-item:hover .service-number {
+            color: #c9c5b8;
+        }
+
+        /* ===== PREMIUM FEATURE 10: Scroll Reveal Animation ===== */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -86,7 +266,107 @@
             transform: translateY(0);
         }
 
-        /* Project Modal */
+        .exp-reveal {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .exp-reveal.animate-in {
+            animation: expFadeIn 0.8s cubic-bezier(0.5, 0, 0, 1) forwards;
+        }
+
+        @keyframes expFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== PREMIUM FEATURE 11: Parallax Container ===== */
+        .parallax-container {
+            overflow: hidden;
+        }
+
+        .parallax-container img {
+            will-change: transform;
+            transition: filter 1s ease;
+        }
+
+        .parallax-container:hover img {
+            filter: grayscale(0%);
+        }
+
+        /* ===== PREMIUM FEATURE 12: Text Reveal ===== */
+        .reveal-text {
+            overflow: hidden;
+        }
+
+        .reveal-text span {
+            display: inline-block;
+        }
+
+        /* ===== PREMIUM FEATURE 13: Image Reveal ===== */
+        .img-reveal {
+            clip-path: inset(0 0 100% 0);
+            transition: clip-path 1.2s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .img-reveal.revealed {
+            clip-path: inset(0 0 0 0);
+        }
+
+        /* ===== PREMIUM FEATURE 14: Process Timeline ===== */
+        .process-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(201, 197, 184, 0.2), transparent);
+            transform: translateX(-50%);
+        }
+
+        /* ===== PREMIUM FEATURE 15: Mobile Menu Animation ===== */
+        .mobile-menu {
+            clip-path: circle(0% at calc(100% - 40px) 40px);
+            transition: clip-path 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .mobile-menu.active {
+            clip-path: circle(150% at calc(100% - 40px) 40px);
+        }
+
+        /* ===== PREMIUM FEATURE 16: Custom Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3a3a3a;
+        }
+
+        /* ===== PREMIUM FEATURE 17: Text Selection ===== */
+        ::selection {
+            background: rgba(201, 197, 184, 0.3);
+            color: #f5f5f0;
+        }
+
+        /* ===== PREMIUM FEATURE 18: Modal Overlay ===== */
         .modal-overlay {
             opacity: 0;
             pointer-events: none;
@@ -107,7 +387,7 @@
             transform: translateY(0);
         }
 
-        /* Hover Effects */
+        /* ===== PREMIUM FEATURE 19: Hover Lift ===== */
         .hover-lift {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -117,7 +397,7 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        /* Text Gradient */
+        /* ===== PREMIUM FEATURE 20: Text Gradient ===== */
         .text-gradient {
             background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
             -webkit-background-clip: text;
@@ -125,188 +405,248 @@
             background-clip: text;
         }
 
-        /* Noise Texture */
-        .noise {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
+        /* Responsive cursor disable */
+        @media (max-width: 768px) {
+            body {
+                cursor: auto;
+            }
 
-        /* Smooth Image Zoom */
-        .img-zoom-container {
-            overflow: hidden;
-        }
-
-        .img-zoom {
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .img-zoom-container:hover .img-zoom {
-            transform: scale(1.05);
+            .cursor-dot,
+            .cursor-outline {
+                display: none;
+            }
         }
     </style>
+    <base target="_blank">
     <base target="_blank">
 </head>
 
 <body class="antialiased selection:bg-white selection:text-black">
 
-    <!-- Noise Overlay -->
+    <!-- ===== PREMIUM FEATURE 1: Custom Cursor ===== -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- ===== PREMIUM FEATURE 2: Cinematic Loading Screen ===== -->
+    <div class="loader" id="loader">
+        <div class="text-center">
+            <div class="editorial-heading text-3xl md:text-5xl text-soft-white mb-4 tracking-tight">Micah Okoye</div>
+            <div class="loader-text">Digital Designer & Web Specialist</div>
+            <div class="loader-line mx-auto" id="loaderLine"></div>
+        </div>
+    </div>
+
+    <!-- ===== PREMIUM FEATURE 3: Noise Texture Overlay ===== -->
     <div class="noise"></div>
 
-    <!-- Navigation -->
+    <!-- ===== PREMIUM FEATURE 4: Glassmorphism Navigation ===== -->
     <nav id="navbar"
-        class="fixed top-0 w-full z-40 transition-all duration-300 bg-transparent backdrop-blur-none border-b border-transparent">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#hero" class="text-xl font-bold tracking-tighter hover:opacity-80 transition-opacity">Guru</a>
+        class="fixed top-0 w-full z-40 transition-all duration-500 bg-transparent border-b border-transparent px-6 md:px-12 py-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#hero" class="font-display text-sm tracking-ultra-wide uppercase text-soft-white magnetic-target"
+                data-cursor="hover">
+                Guru
+            </a>
 
             <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
-                <a href="#about" class="hover:text-gray-400 transition-colors">ABOUT</a>
-                <a href="#projects" class="hover:text-gray-400 transition-colors">WORK</a>
-                <a href="#experience" class="hover:text-gray-400 transition-colors">JOURNEY</a>
-                <a href="#services" class="hover:text-gray-400 transition-colors">SERVICES</a>
+            <div class="hidden md:flex items-center space-x-12">
+                <a href="#about"
+                    class="nav-link text-soft-white text-xs tracking-ultra-wide uppercase font-display magnetic-target"
+                    data-cursor="hover">About</a>
+                <a href="#projects"
+                    class="nav-link text-soft-white text-xs tracking-ultra-wide uppercase font-display magnetic-target"
+                    data-cursor="hover">Work</a>
+                <a href="#experience"
+                    class="nav-link text-soft-white text-xs tracking-ultra-wide uppercase font-display magnetic-target"
+                    data-cursor="hover">Journey</a>
+                <a href="#services"
+                    class="nav-link text-soft-white text-xs tracking-ultra-wide uppercase font-display magnetic-target"
+                    data-cursor="hover">Services</a>
                 <a href="#contact"
-                    class="px-5 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-colors">LET'S
-                    TALK</a>
+                    class="magnetic-btn px-6 py-3 bg-white text-black text-xs tracking-ultra-wide uppercase font-display rounded-full magnetic-target"
+                    data-cursor="hover">
+                    Let's Talk
+                </a>
             </div>
 
             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
-                <i class="fas fa-bars text-xl"></i>
+            <button id="mobile-menu-btn"
+                class="md:hidden text-soft-white z-50 relative focus:outline-none magnetic-target" data-cursor="hover">
+                <div class="w-6 h-px bg-current mb-1.5 transition-all" id="menuLine1"></div>
+                <div class="w-6 h-px bg-current transition-all" id="menuLine2"></div>
             </button>
         </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-brand-black border-t border-gray-800 absolute w-full">
-            <div class="flex flex-col p-6 space-y-4 text-center">
-                <a href="#about" class="text-lg hover:text-gray-400">About</a>
-                <a href="#projects" class="text-lg hover:text-gray-400">Work</a>
-                <a href="#experience" class="text-lg hover:text-gray-400">Journey</a>
-                <a href="#services" class="text-lg hover:text-gray-400">Services</a>
-                <a href="#contact"
-                    class="px-5 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-colors">LET'S
-                    TALK</a>
-            </div>
-        </div>
     </nav>
+
+    <!-- ===== PREMIUM FEATURE 15: Mobile Menu Animation ===== -->
+    <div class="mobile-menu fixed inset-0 bg-matte z-40 flex items-center justify-center" id="mobile-menu">
+        <div class="flex flex-col items-center gap-8">
+            <a href="#about" class="text-soft-white font-serif text-4xl mobile-link">About</a>
+            <a href="#projects" class="text-soft-white font-serif text-4xl mobile-link">Work</a>
+            <a href="#experience" class="text-soft-white font-serif text-4xl mobile-link">Journey</a>
+            <a href="#services" class="text-soft-white font-serif text-4xl mobile-link">Services</a>
+            <a href="#contact" class="text-soft-white font-serif text-4xl mobile-link">Contact</a>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <!-- Background Elements -->
         <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-matte via-transparent to-matte z-10"></div>
+            <div
+                class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(26,26,26,0.4)_0%,_transparent_70%)]">
+            </div>
             <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
             <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gray-800/20 rounded-full blur-3xl"></div>
         </div>
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <i class="fas fa-arrow-down text-gray-500 text-sm"></i>
-        </div>
+
         <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
             <div class="reveal active">
-                <p class="text-gray-400 text-sm md:text-base tracking-[0.2em] uppercase mb-6 font-medium">Okoye Micah
-                    <br> Nkemjika</p>
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-8">
-                    A Creative Designer<br>
-                    <span class="text-gradient">& Frontend Developer</span>
+                <p class="architectural-label mb-8" id="heroLabel">Okoye Micah Nkemjika</p>
+
+                <h1 class="editorial-heading text-5xl md:text-7xl lg:text-8xl text-soft-white mb-8 leading-[0.95]">
+                    <span class="block overflow-hidden">
+                        <span class="inline-block hero-line">A Creative Designer</span>
+                    </span>
+                    <span class="block overflow-hidden">
+                        <span class="inline-block hero-line italic text-muted-beige">& Frontend Developer</span>
+                    </span>
                 </h1>
-                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+
+                <p class="text-metallic text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-light"
+                    id="heroSub">
                     I'm passionate about building visually compelling and user focused digital experiences. I combine
                     design thinking with modern web technologies to create responsive, engaging, and high performing
                     websites.
                 </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="#projects"
-                        class="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all transform hover:scale-105">
-                        View My Work
-                    </a>
+
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4" id="heroCTA">
                     <a href="#contact"
-                        class="px-8 py-4 border border-gray-700 text-white font-bold rounded-full hover:border-white transition-all">
-                        Work With Me
+                        class="magnetic-btn px-10 py-5 text-xs tracking-ultra-wide uppercase font-display text-soft-white magnetic-target"
+                        data-cursor="hover">
+                        Get in Touch
+                    </a>
+                    <a href="./Micah Resume.pdf" download="Micah Resume.pdf"
+                        class="magnetic-btn px-10 py-5 text-xs tracking-ultra-wide uppercase font-display text-soft-white magnetic-target"
+                        data-cursor="hover">
+                        Download Portfolio PDF
                     </a>
                 </div>
+
             </div>
         </div>
-
-
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-24 md:py-32 relative">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-                <div class="reveal gap-3 flex flex-col">
-                    <i class="fas fa-user text-2xl mb-2 text-white"></i>
-                    <h3 class="font-bold text-lg mb-1">About Me</h3>
-                    <p class="text-sm text-gray-500">Hi, I’m Okoye Micah, As a Creative Designer & Frontend Developer,
-                        I’m driven by innovation and continuous learning. I enjoy crafting modern, responsive websites
-                        that help brands stand out and connect meaningfully with their audience.</p>
-                    <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-6">Major Skills.</h2>
-                    <div class="w-20 h-1 bg-white mb-8"></div>
-
-                    <div class="bg-brand-gray p-6 rounded-2xl hover-lift border border-gray-800">
-                        <i class="fas fas fa-users text-2xl mb-4 text-white"></i>
-                        <h3 class="font-bold text-lg mb-1">Core Expertise</h3>
-                        <p class="text-sm text-gray-500">• UI/UX Design • Frontend Development • Responsive Web Design
-                            <br> • Design Systems • Brand Identity • Creative Designer • IT Support</p>
-                    </div>
-                    <div class="bg-brand-gray p-6 rounded-2xl hover-lift border border-gray-800">
-                        <i class="fas fab fa-react text-2xl mb-4 text-white"></i>
-                        <h3 class="font-bold text-lg mb-1">Tools & Technologies</h3>
-                        <p class="text-sm text-gray-500">• HTML • CSS • JavaScript • React • Next.js • Adobe Creative
-                            Suite • Canva <br> • Tailwind CSS • Figma • CorelDRAW • Git & GitHub</p>
+    <section id="about" class="py-24 md:py-48 relative">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="grid md:grid-cols-12 gap-16 items-start">
+                <div class="md:col-span-5">
+                    <span class="architectural-label block mb-8">About</span>
+                    <div class="parallax-container aspect-[3/4] overflow-hidden rounded-2xl">
+                        <img src="./img/profile.png" alt="Micah Okoye"
+                            class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                            id="aboutImage">
                     </div>
                 </div>
 
+                <div class="md:col-span-7 flex flex-col justify-center">
+                    <h2
+                        class="editorial-heading text-4xl md:text-5xl lg:text-6xl text-soft-white mb-12 leading-tight about-reveal">
+                        Designing with<br>
+                        <em class="text-muted-beige">intention</em> and<br>
+                        modern precision.
+                    </h2>
 
-                <div class="reveal grid grid-cols-2 gap-4">
-                    <!-- Skill Cards -->
-                    <div class="bg-brand-gray p-6 rounded-2xl hover-lift border border-gray-800">
-                        <i class="fas fas fa-pencil-ruler text-2xl mb-4 text-white"></i>
-                        <h3 class="font-bold text-lg mb-1">UI/UX Design</h3>
-                        <p class="text-sm text-gray-500">I design intuitive and visually engaging user experiences that
-                            prioritize usability and user satisfaction. From wireframes to high-fidelity designs, I
-                            focus on creating seamless interactions that align with both user needs and business goals.
+                    <div class="space-y-8 text-metallic text-sm md:text-base leading-relaxed font-light about-reveal">
+                        <p>
+                            Hi, I'm Okoye Micah, a Creative Designer & Frontend Developer driven by innovation and
+                            continuous learning. I enjoy crafting modern, responsive websites that help brands stand out
+                            and connect meaningfully with their audience.
+                        </p>
+                        <p>
+                            With experience spanning graphic design, UI/UX, and frontend development, I transform
+                            concepts into tangible digital realities. Every pixel is considered, every interaction
+                            intentional, as I strive to create seamless and engaging user experiences. <br> <em
+                                class="text-muted-beige">Let's build something amazing together.</em>
                         </p>
                     </div>
-                    <div class="bg-brand-gray p-6 rounded-2xl hover-lift border border-gray-800">
-                        <i class="fas fa-tools text-2xl mb-4 text-white"></i>
-                        <h3 class="font-bold text-lg mb-1">IT Support</h3>
-                        <p class="text-sm text-gray-500">I provide comprehensive IT support and troubleshooting services
-                            to ensure smooth operations and minimize downtime.</p>
+
+                    <div class="mt-16 grid grid-cols-3 gap-8 about-reveal">
+                        <div>
+                            <span class="editorial-heading text-3xl md:text-4xl text-soft-white block mb-2">4+</span>
+                            <span class="architectural-label text-[10px]">Years Experience</span>
+                        </div>
+                        <div>
+                            <span class="editorial-heading text-3xl md:text-4xl text-soft-white block mb-2">22+</span>
+                            <span class="architectural-label text-[10px]">Clients</span>
+                        </div>
+                        <div>
+                            <span class="editorial-heading text-3xl md:text-4xl text-soft-white block mb-2">7+</span>
+                            <span class="architectural-label text-[10px]">Companies Served</span>
+                        </div>
                     </div>
-                    <div class="bg-brand-gray p-6 rounded-2xl hover-lift border border-gray-800">
-                        <i class="fas fa-code text-2xl mb-4 text-white"></i>
-                        <h3 class="font-bold text-lg mb-1">Frontend Development</h3>
-                        <p class="text-sm text-gray-500">I build responsive and interactive web applications using
-                            modern technologies and best practices.</p>
-                    </div>
-                    <div class="bg-brand-gray p-6 rounded-2xl hover-lift border border-gray-800">
-                        <i class="fas fa-id-badge text-2xl mb-4 text-white"></i>
-                        <h3 class="font-bold text-lg mb-1">Brand Identity</h3>
-                        <p class="text-sm text-gray-500">I create cohesive brand experiences that communicate values and
-                            differentiate from competitors.</p>
-                    </div>
+                </div>
+            </div>
+
+            <div class="mt-24 grid md:grid-cols-2 gap-8">
+                <!-- Skill Cards -->
+                <div class="bg-brand-gray p-8 rounded-2xl hover-lift border border-gray-800 reveal">
+                    <i class="fas fa-pencil-ruler text-2xl mb-4 text-soft-white"></i>
+                    <h3 class="font-bold text-lg mb-1 text-soft-white">UI/UX Design</h3>
+                    <p class="text-sm text-gray-500">I design intuitive and visually engaging user experiences that
+                        prioritize usability and user satisfaction. From wireframes to high-fidelity designs, I focus on
+                        creating seamless interactions.</p>
+                </div>
+                <div class="bg-brand-gray p-8 rounded-2xl hover-lift border border-gray-800 reveal">
+                    <i class="fas fa-tools text-2xl mb-4 text-soft-white"></i>
+                    <h3 class="font-bold text-lg mb-1 text-soft-white">IT Support</h3>
+                    <p class="text-sm text-gray-500">I provide comprehensive IT support and troubleshooting services to
+                        ensure smooth operations and minimize downtime.</p>
+                </div>
+                <div class="bg-brand-gray p-8 rounded-2xl hover-lift border border-gray-800 reveal">
+                    <i class="fas fa-code text-2xl mb-4 text-soft-white"></i>
+                    <h3 class="font-bold text-lg mb-1 text-soft-white">Frontend Development</h3>
+                    <p class="text-sm text-gray-500">I build responsive and interactive web applications using modern
+                        technologies and best practices.</p>
+                </div>
+                <div class="bg-brand-gray p-8 rounded-2xl hover-lift border border-gray-800 reveal">
+                    <i class="fas fa-id-badge text-2xl mb-4 text-soft-white"></i>
+                    <h3 class="font-bold text-lg mb-1 text-soft-white">Brand Identity</h3>
+                    <p class="text-sm text-gray-500">I create cohesive brand experiences that communicate values and
+                        differentiate from competitors.</p>
+                </div>
+                <div class="bg-brand-gray p-8 rounded-2xl hover-lift border border-gray-800 reveal">
+                    <i class="fas fa-globe text-2xl mb-4 text-soft-white"></i>
+                    <h3 class="font-bold text-lg mb-1 text-soft-white">Website Design</h3>
+                    <p class="text-sm text-gray-500">I build responsive and interactive websites that provide
+                        exceptional user experiences.</p>
+                </div>
+                <div class="bg-brand-gray p-8 rounded-2xl hover-lift border border-gray-800 reveal">
+                    <i class="fas fa-bullhorn text-2xl mb-4 text-soft-white"></i>
+                    <h3 class="font-bold text-lg mb-1 text-soft-white">Personal Branding</h3>
+                    <p class="text-sm text-gray-500">I help individuals and businesses establish a strong, consistent
+                        brand presence across all channels.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-24 md:py-32 bg-brand-dark">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex justify-between items-end mb-16 reveal">
+    <section id="projects" class="py-24 md:py-48 bg-charcoal">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-6">
                 <div>
-                    <p class="text-gray-500 text-sm tracking-widest uppercase mb-2">Selected Work</p>
-                    <h2 class="text-4xl md:text-5xl font-bold tracking-tight">Featured Projects</h2>
+                    <span class="architectural-label block mb-4">Selected Work</span>
+                    <h2 class="editorial-heading text-4xl md:text-6xl text-soft-white">Featured Projects</h2>
                 </div>
-                <a href="#" class="hidden md:block text-sm font-medium hover:text-gray-400 transition-colors">View All
-                    <i class="fas fa-arrow-right ml-2"></i></a>
+                <a href="#"
+                    class="hidden md:block text-sm font-medium text-metallic hover:text-soft-white transition-colors magnetic-target"
+                    data-cursor="hover">
+                    View All <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
@@ -316,281 +656,252 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="py-24 md:py-32">
-        <div class="max-w-4xl mx-auto px-6">
-            <div class="text-center mb-16 reveal">
-                <p class="text-gray-500 text-sm tracking-widest uppercase mb-2">The Journey</p>
-                <h2 class="text-4xl md:text-5xl font-bold tracking-tight">Experience</h2>
+    <section id="experience" class="py-24 md:py-48">
+        <div class="max-w-5xl mx-auto px-6 md:px-12">
+            <div class="text-center mb-24 exp-reveal" data-delay="0">
+                <span class="architectural-label block mb-4">The Journey</span>
+                <h2 class="editorial-heading text-4xl md:text-6xl text-soft-white">Experience</h2>
             </div>
 
-            <div class="relative border-l border-gray-800 ml-4 md:ml-0 md:pl-0 space-y-12">
-                <!-- Timeline Item 1 -->
-                <div class="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 reveal group">
-                    <div class="md:col-span-1 text-left md:text-right">
-                        <span class="text-sm font-mono text-gray-500">July — Nov 2022</span>
+            <div class="relative">
+                <div class="process-line hidden md:block"></div>
+
+                <div class="space-y-24">
+                    <!-- Timeline Item 1 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center exp-reveal" data-delay="1">
+                        <div class="md:text-right">
+                            <span class="architectural-label block mb-4 md:hidden">01</span>
+                            <h3 class="font-serif text-2xl md:text-3xl text-soft-white mb-2">Graphic Designer & Social
+                                Media Manager</h3>
+                            <p class="text-metallic text-sm mb-3">Ogaprint Digital</p>
+                            <p class="text-gray-500 text-sm leading-relaxed">Led design and execution of digital and
+                                print marketing materials. Managed social media content planning and campaign
+                                coordination.</p>
+                        </div>
+                        <div class="hidden md:block">
+                            <span class="editorial-heading text-5xl text-muted-beige opacity-20">01</span>
+                            <p class="text-sm font-mono text-metallic mt-2">Jul — Nov 2022</p>
+                        </div>
                     </div>
-                    <div
-                        class="hidden md:block absolute left-[19.5%] top-2 w-3 h-3 bg-white rounded-full border-4 border-brand-black group-hover:scale-150 transition-transform">
+
+                    <!-- Timeline Item 2 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center exp-reveal" data-delay="2">
+                        <div class="hidden md:block text-right">
+                            <span class="editorial-heading text-5xl text-muted-beige opacity-20">02</span>
+                            <p class="text-sm font-mono text-metallic mt-2">Feb — Jun 2023</p>
+                        </div>
+                        <div>
+                            <span class="architectural-label block mb-4 md:hidden">02</span>
+                            <h3 class="font-serif text-2xl md:text-3xl text-soft-white mb-2">Creative Designer</h3>
+                            <p class="text-metallic text-sm mb-3">Branniumtech (Remote)</p>
+                            <p class="text-gray-500 text-sm leading-relaxed">Worked closely with developers to ensure
+                                design feasibility. Developed brand identities and digital assets for tech-focused
+                                products.</p>
+                        </div>
                     </div>
-                    <div class="md:col-span-4">
-                        <h3 class="text-xl font-bold mb-1">Graphic Designer & Social Media Assistant Manager</h3>
-                        <p class="text-gray-400 text-sm mb-3">Ogaprint Digital</p>
-                        <p class="text-gray-500 leading-relaxed">
-                            - Led the design and execution of digital and print marketing materials aligned with brand
-                            strategy.
-                            <br> - Managed social media content planning, campaign coordination, and performance
-                            tracking.
-                            <br> - Collaborated with cross-functional teams to ensure brand messaging remained cohesive
-                            and impactful.
-                        </p>
+
+                    <!-- Timeline Item 3 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center exp-reveal" data-delay="3">
+                        <div class="md:text-right">
+                            <span class="architect-label block mb-4 md:hidden">03</span>
+                            <h3 class="font-serif text-2xl md:text-3xl text-soft-white mb-2">Creative Designer</h3>
+                            <p class="text-metallic text-sm mb-3">Motard Print Limited</p>
+                            <p class="text-gray-500 text-sm leading-relaxed">Oversaw creative direction for client
+                                projects from concept to final output. Produced high-quality, print-ready designs.</p>
+                        </div>
+                        <div class="hidden md:block">
+                            <span class="editorial-heading text-5xl text-muted-beige opacity-20">03</span>
+                            <p class="text-sm font-mono text-metallic mt-2">Mar — Oct 2023</p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 4 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center exp-reveal" data-delay="4">
+                        <div class="hidden md:block text-right">
+                            <span class="editorial-heading text-5xl text-muted-beige opacity-20">04</span>
+                            <p class="text-sm font-mono text-metallic mt-2">Sept 2023 — 2024</p>
+                        </div>
+                        <div>
+                            <span class="architectural-label block mb-4 md:hidden">04</span>
+                            <h3 class="font-serif text-2xl md:text-3xl text-soft-white mb-2">Graphic Designer</h3>
+                            <p class="text-metallic text-sm mb-3">ISCG University</p>
+                            <p class="text-gray-500 text-sm leading-relaxed">Supported university campaigns through
+                                strategic visual communication. Designed institutional marketing materials and event
+                                branding.</p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 5 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center exp-reveal" data-delay="5">
+                        <div class="md:text-right">
+                            <span class="architectural-label block mb-4 md:hidden">05</span>
+                            <h3 class="font-serif text-2xl md:text-3xl text-soft-white mb-2">UI/UX Designer & Frontend
+                                Developer Intern</h3>
+                            <p class="text-metallic text-sm mb-3">Investment One Financial Services (IOFS)</p>
+                            <p class="text-gray-500 text-sm leading-relaxed">Developed responsive frontend components.
+                                Designed user-centered interfaces and interactive prototypes for financial products.</p>
+                        </div>
+                        <div class="hidden md:block">
+                            <span class="editorial-heading text-5xl text-muted-beige opacity-20">05</span>
+                            <p class="text-sm font-mono text-metallic mt-2">May — Sept 2024</p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 6 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center exp-reveal" data-delay="6">
+                        <div class="hidden md:block text-right">
+                            <span class="editorial-heading text-5xl text-muted-beige opacity-20">06</span>
+                            <p class="text-sm font-mono text-metallic mt-2">Jul — Nov 2025</p>
+                        </div>
+                        <div>
+                            <span class="architectural-label block mb-4 md:hidden">06</span>
+                            <h3 class="font-serif text-2xl md:text-3xl text-soft-white mb-2">Administrative Officer</h3>
+                            <p class="text-metallic text-sm mb-3">Doren Specialist Hospital</p>
+                            <p class="text-gray-500 text-sm leading-relaxed">Managed administrative operations and
+                                documentation. Improved workflow efficiency through structured reporting systems.</p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 7 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center exp-reveal" data-delay="7">
+                        <div class="md:text-right">
+                            <span class="architectural-label block mb-4 md:hidden">07</span>
+                            <h3 class="font-serif text-2xl md:text-3xl text-soft-white mb-2">IT Support Specialist</h3>
+                            <p class="text-metallic text-sm mb-3">Risurge Digital</p>
+                            <p class="text-gray-500 text-sm leading-relaxed">Provide technical support for hardware,
+                                software, and internal systems. Troubleshoot and resolve user issues to ensure
+                                operational continuity.</p>
+                        </div>
+                        <div class="hidden md:block">
+                            <span class="editorial-heading text-5xl text-muted-beige opacity-20">07</span>
+                            <p class="text-sm font-mono text-metallic mt-2">Nov 2025 — Present</p>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Timeline Item 2 -->
-                <div class="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 reveal group">
-                    <div class="md:col-span-1 text-left md:text-right">
-                        <span class="text-sm font-mono text-gray-500">Feb — June 2023</span>
-                    </div>
-                    <div
-                        class="hidden md:block absolute left-[19.5%] top-2 w-3 h-3 bg-gray-600 rounded-full border-4 border-brand-black group-hover:bg-white transition-colors">
-                    </div>
-                    <div class="md:col-span-4">
-                        <h3 class="text-xl font-bold mb-1">Creative Designer</h3>
-                        <p class="text-gray-400 text-sm mb-3">Branniumtech (Remote)</p>
-                        <p class="text-gray-500 leading-relaxed">
-                            - Worked closely with developers to ensure design feasibility and seamless implementation.
-                            <br> - Maintained brand standards across multiple projects and client engagements.
-                            <br> - Developed brand identities and digital assets for technology-focused products and
-                            services.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 3 -->
-                <div class="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 reveal group">
-                    <div class="md:col-span-1 text-left md:text-right">
-                        <span class="text-sm font-mono text-gray-500">Mar — Oct 2023</span>
-                    </div>
-                    <div
-                        class="hidden md:block absolute left-[19.5%] top-2 w-3 h-3 bg-gray-600 rounded-full border-4 border-brand-black group-hover:bg-white transition-colors">
-                    </div>
-                    <div class="md:col-span-4">
-                        <h3 class="text-xl font-bold mb-1">Creative Designer</h3>
-                        <p class="text-gray-400 text-sm mb-3">Motard Print Limited</p>
-                        <p class="text-gray-500 leading-relaxed">
-                            - Oversaw creative direction for client projects from concept development to final output.
-                            <br> - Ensured alignment between client expectations and production specifications.
-                            <br> - Produced high-quality, print-ready designs in collaboration with production teams.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 4 -->
-                <div class="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 reveal group">
-                    <div class="md:col-span-1 text-left md:text-right">
-                        <span class="text-sm font-mono text-gray-500">Sept 2023 — 2024</span>
-                    </div>
-                    <div
-                        class="hidden md:block absolute left-[19.5%] top-2 w-3 h-3 bg-gray-600 rounded-full border-4 border-brand-black group-hover:bg-white transition-colors">
-                    </div>
-                    <div class="md:col-span-4">
-                        <h3 class="text-xl font-bold mb-1">Graphic Designer</h3>
-                        <p class="text-gray-400 text-sm mb-3">ISCG University</p>
-                        <p class="text-gray-500 leading-relaxed">
-                            - Supported university campaigns through strategic visual communication across digital and
-                            print channels.
-                            <br> - Coordinated with departments to deliver high-quality creative solutions under strict
-                            timelines.
-                            <br> - Designed institutional marketing materials, academic publications, and event branding
-                            assets.
-                        </p>
-                    </div>
-                </div>
-
-
-
-                <!-- Timeline Item 5 -->
-                <div class="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 reveal group">
-                    <div class="md:col-span-1 text-left md:text-right">
-                        <span class="text-sm font-mono text-gray-500">May — Sept 2024</span>
-                    </div>
-                    <div
-                        class="hidden md:block absolute left-[19.5%] top-2 w-3 h-3 bg-gray-600 rounded-full border-4 border-brand-black group-hover:bg-white transition-colors">
-                    </div>
-                    <div class="md:col-span-4">
-                        <h3 class="text-xl font-bold mb-1">UI/UX Designer & Frontend Developer Intern</h3>
-                        <p class="text-gray-400 text-sm mb-3">Investment One Financial Services Limited (IOFS)</p>
-                        <p class="text-gray-500 leading-relaxed">
-                            - Developed responsive frontend components aligned with product requirements and design
-                            systems.
-                            <br> - Collaborated with product managers and engineers to enhance user experience and
-                            system functionality.
-                            <br> - Designed user-centered interfaces and interactive prototypes for financial products.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 6 -->
-                <div class="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 reveal group">
-                    <div class="md:col-span-1 text-left md:text-right">
-                        <span class="text-sm font-mono text-gray-500">Jul — Nov 2025</span>
-                    </div>
-                    <div
-                        class="hidden md:block absolute left-[19.5%] top-2 w-3 h-3 bg-gray-600 rounded-full border-4 border-brand-black group-hover:bg-white transition-colors">
-                    </div>
-                    <div class="md:col-span-4">
-                        <h3 class="text-xl font-bold mb-1">Administrative Officer</h3>
-                        <p class="text-gray-400 text-sm mb-3">Doren Specialist Hospital</p>
-                        <p class="text-gray-500 leading-relaxed">
-                            - Managed administrative operations, documentation processes, and internal coordination.
-                            <br> - Improved workflow efficiency through structured reporting and record management
-                            systems.
-                            <br> - Facilitated communication between departments to support smooth operational delivery.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Timeline Item 7 -->
-                <div class="relative pl-8 md:pl-0 md:grid md:grid-cols-5 md:gap-8 reveal group">
-                    <div class="md:col-span-1 text-left md:text-right">
-                        <span class="text-sm font-mono text-gray-500">Nov 2025 — Present</span>
-                    </div>
-                    <div
-                        class="hidden md:block absolute left-[19.5%] top-2 w-3 h-3 bg-gray-600 rounded-full border-4 border-brand-black group-hover:bg-white transition-colors">
-                    </div>
-                    <div class="md:col-span-4">
-                        <h3 class="text-xl font-bold mb-1">IT Support Specialist</h3>
-                        <p class="text-gray-400 text-sm mb-3">Risurge Digital</p>
-                        <p class="text-gray-500 leading-relaxed">
-                            - Provide technical support for hardware, software, and internal systems.
-                            <br> - Assist in system configuration, maintenance, and infrastructure support.
-                            <br> - Troubleshoot and resolve user issues to ensure operational continuity.
-                            <br> - Support digital operations and maintain IT performance standards.
-                        </p>
-                    </div>
-                </div>
-
-
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="py-24 md:py-32 bg-brand-dark">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 reveal">
-                <p class="text-gray-500 text-sm tracking-widest uppercase mb-2">What I Offer</p>
-                <h2 class="text-4xl md:text-5xl font-bold tracking-tight">Services</h2>
+    <section id="services" class="py-24 md:py-48 bg-charcoal">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="mb-24">
+                <span class="architectural-label block mb-4">Capabilities</span>
+                <h2 class="editorial-heading text-4xl md:text-6xl text-soft-white">Services</h2>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Service 1 -->
-                <div
-                    class="p-8 rounded-3xl bg-brand-black border border-gray-800 hover:border-gray-600 transition-colors reveal">
-                    <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-tools text-xl"></i>
+            <div class="space-y-0">
+                <div class="service-item py-12 md:py-16 group cursor-pointer" data-cursor="hover">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex items-baseline gap-8">
+                            <span class="service-number font-display text-xs text-metallic transition-colors">01</span>
+                            <h3
+                                class="font-serif text-3xl md:text-5xl text-soft-white group-hover:text-muted-beige transition-colors">
+                                IT Support</h3>
+                        </div>
+                        <p
+                            class="text-metallic text-sm max-w-md font-light opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            Comprehensive IT support and troubleshooting to ensure smooth operations and minimize
+                            downtime.
+                        </p>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">IT Support</h3>
-                    <p class="text-gray-400 mb-6 leading-relaxed">
-                        I provide reliable IT support to ensure your systems run smoothly and efficiently. From
-                        troubleshooting hardware and software issues to network setup and maintenance, I offer
-                        comprehensive solutions tailored to your needs. I've got you covered.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-500 mb-8">
-                        <li><i class="fas fa-check text-white mr-2"></i> Technical Support</li>
-                        <li><i class="fas fa-check text-white mr-2"></i> System Maintenance</li>
-                        <li><i class="fas fa-check text-white mr-2"></i> Network Setup</li>
-                    </ul>
-                    <button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})"
-                        class="w-full py-3 border border-gray-700 rounded-full hover:bg-white hover:text-black transition-all font-medium">Enquire
-                        Now</button>
                 </div>
 
-                <!-- Service 2 -->
-                <div
-                    class="p-8 rounded-3xl bg-brand-black border border-gray-800 hover:border-gray-600 transition-colors reveal">
-                    <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-laptop-code text-xl"></i>
+                <div class="service-item py-12 md:py-16 group cursor-pointer" data-cursor="hover">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex items-baseline gap-8">
+                            <span class="service-number font-display text-xs text-metallic transition-colors">02</span>
+                            <h3
+                                class="font-serif text-3xl md:text-5xl text-soft-white group-hover:text-muted-beige transition-colors">
+                                Frontend Development</h3>
+                        </div>
+                        <p
+                            class="text-metallic text-sm max-w-md font-light opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            Fast, responsive, and scalable web applications using modern technologies with clean code
+                            and smooth performance.
+                        </p>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Development</h3>
-                    <p class="text-gray-400 mb-6 leading-relaxed">
-                        I build fast, responsive, and scalable web applications using modern technologies to streamline
-                        your business operations and enhance productivity, clean code, smooth performance, and great
-                        user experience are always the focus.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-500 mb-8">
-                        <li><i class="fas fa-check text-white mr-2"></i> Frontend Development</li>
-                        <li><i class="fas fa-check text-white mr-2"></i> Responsive Web Development</li>
-                        <li><i class="fas fa-check text-white mr-2"></i> Performance Optimization</li>
-                    </ul>
-                    <button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})"
-                        class="w-full py-3 border border-gray-700 rounded-full hover:bg-white hover:text-black transition-all font-medium">Enquire
-                        Now</button>
                 </div>
 
-                <!-- Service 3 -->
-                <div
-                    class="p-8 rounded-3xl bg-brand-black border border-gray-800 hover:border-gray-600 transition-colors reveal">
-                    <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-pen-nib text-xl"></i>
+                <div class="service-item py-12 md:py-16 group cursor-pointer" data-cursor="hover">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex items-baseline gap-8">
+                            <span class="service-number font-display text-xs text-metallic transition-colors">03</span>
+                            <h3
+                                class="font-serif text-3xl md:text-5xl text-soft-white group-hover:text-muted-beige transition-colors">
+                                Creative Designs</h3>
+                        </div>
+                        <p
+                            class="text-metallic text-sm max-w-md font-light opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            Visually stunning and user-friendly designs crafted with purpose and precision to resonate
+                            with your audience.
+                        </p>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Premium Designs</h3>
-                    <p class="text-gray-400 mb-6 leading-relaxed">
-                        I create visually stunning and user-friendly designs that bring ideas to life and build strong
-                        brand identities. Every design is crafted with purpose and precision to ensure it resonates with
-                        your audience and achieves your business goals.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-500 mb-8">
-                        <li><i class="fas fa-check text-white mr-2"></i> Adobe Creative Suite</li>
-                        <li><i class="fas fa-check text-white mr-2"></i> UI/UX Design</li>
-                        <li><i class="fas fa-check text-white mr-2"></i> Design Systems</li>
-                    </ul>
-                    <button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})"
-                        class="w-full py-3 border border-gray-700 rounded-full hover:bg-white hover:text-black transition-all font-medium">Enquire
-                        Now</button>
+                </div>
+                <div class="service-item py-12 md:py-16 group cursor-pointer" data-cursor="hover">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex items-baseline gap-8">
+                            <span class="service-number font-display text-xs text-metallic transition-colors">04</span>
+                            <h3 class="font-serif text-3xl md:text-5xl text-soft-white group-hover:text-muted-beige transition-colors">Web Design</h3>
+                        </div>
+                        <p class="text-metallic text-sm max-w-md font-light opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            Bespoke digital interfaces crafted with meticulous attention to typography, spacing, and visual hierarchy.
+                        </p>
+                    </div>
+                </div>
+                <div class="service-item py-12 md:py-16 group cursor-pointer" data-cursor="hover">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex items-baseline gap-8">
+                            <span class="service-number font-display text-xs text-metallic transition-colors">05</span>
+                            <h3 class="font-serif text-3xl md:text-5xl text-soft-white group-hover:text-muted-beige transition-colors">Brand Experience</h3>
+                        </div>
+                        <p class="text-metallic text-sm max-w-md font-light opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            Holistic digital brand systems that communicate sophistication and establish emotional connections.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Social Proof Section -->
-    <section id="social-proof" class="py-24 md:py-32">
-        <div class="max-w-7xl mx-auto px-6">
+    <section id="social-proof" class="py-24 md:py-48">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="reveal">
-                    <p class="text-gray-500 text-sm tracking-widest uppercase mb-2">Results</p>
-                    <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-8">Numbers Don't Lie</h2>
+                    <span class="architectural-label block mb-4">Results</span>
+                    <h2 class="editorial-heading text-4xl md:text-5xl text-soft-white mb-12">Numbers Don't Lie</h2>
 
-                    <div class="grid grid-cols-3 gap-4 mb-8">
+                    <div class="grid grid-cols-3 gap-8 mb-8">
                         <div>
-                            <p class="text-4xl md:text-5xl font-black text-white mb-2">16+</p>
-                            <p class="text-gray-400 text-sm">Clients & Students</p>
+                            <span class="editorial-heading text-4xl md:text-5xl text-soft-white block mb-2">16+</span>
+                            <span class="architectural-label text-[10px]">Clients & Students</span>
                         </div>
                         <div>
-                            <p class="text-4xl md:text-5xl font-black text-white mb-2">10%</p>
-                            <p class="text-gray-400 text-sm">Avg. Conversion Lift</p>
+                            <span class="editorial-heading text-4xl md:text-5xl text-soft-white block mb-2">10%</span>
+                            <span class="architectural-label text-[10px]">Avg. Conversion Lift</span>
                         </div>
                         <div>
-                            <p class="text-4xl md:text-5xl font-black text-white mb-2">4+</p>
-                            <p class="text-gray-400 text-sm">Years Experience</p>
+                            <span class="editorial-heading text-4xl md:text-5xl text-soft-white block mb-2">4+</span>
+                            <span class="architectural-label text-[10px]">Years Experience</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="reveal">
-                    <div class="bg-brand-gray p-8 rounded-3xl border border-gray-800 relative">
+                    <div class="bg-brand-gray p-8 md:p-12 rounded-3xl border border-gray-800 relative">
                         <i class="fas fa-quote-right text-4xl text-gray-700 absolute top-8 right-8"></i>
-                        <p class="text-xl md:text-2xl font-medium leading-relaxed mb-6">
+                        <p class="text-xl md:text-2xl font-medium leading-relaxed mb-8 text-soft-white">
                             "Micah completely transformed our digital presence. The website he designed and developed
                             has significantly improved our user engagement and conversion rates. A true professional!"
                         </p>
                         <div class="flex items-center">
                             <div
-                                class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center text-lg font-bold mr-4">
+                                class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center text-lg font-bold mr-4 text-soft-white">
                                 PO</div>
                             <div>
-                                <p class="font-bold">Praise Oweh</p>
-                                <p class="text-sm text-gray-500">CEO, Risurge Digital</p>
+                                <p class="font-bold text-soft-white">Praise Oweh</p>
+                                <p class="text-sm text-metallic">CEO, Risurge Digital</p>
                             </div>
                         </div>
                     </div>
@@ -600,122 +911,112 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 md:py-32 bg-brand-dark">
-        <div class="max-w-4xl mx-auto px-6">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">Let's Build.</h2>
-                <p class="text-gray-400 text-lg">Have a project in mind? Send me a message.</p>
+    <section id="contact" class="py-24 md:py-48 bg-charcoal min-h-screen flex items-center">
+        <div class="max-w-4xl mx-auto px-6 md:px-12 w-full">
+            <div class="text-center mb-16">
+                <span class="architectural-label block mb-8">Start a Conversation</span>
+                <h2 class="editorial-heading text-5xl md:text-7xl lg:text-8xl text-soft-white mb-8 leading-tight">
+                    Let's Build<br>
+                    <em class="text-muted-beige">Something</em><br>
+                    Exceptional
+                </h2>
+                <p class="text-metallic text-sm md:text-base max-w-lg mx-auto mb-16 leading-relaxed font-light">
+                    Have a project in mind? I'm currently accepting select projects. <br> Send me a message and let's
+                    create something remarkable together.
+                </p>
             </div>
 
-                 <div class="scroll-reveal">
-          <form action="https://api.web3forms.com/submit" method="POST" class="p-8 rounded-2xl bg-white/5 border border-white/10">
+            <form action="https://api.web3forms.com/submit" method="POST"
+                class="p-8 md:p-12 rounded-3xl bg-white/5 border border-white/10">
+                <input type="hidden" name="access_key" value="2b49d5db-4ac0-477f-89bc-36ca322dad15" />
+                <input type="hidden" name="subject"
+                    value="New Contact Form Submission - OKOYE MICAH PERSONAL WEBSITE" />
+                <input type="hidden" name="from_name" value="OKOYE MICAH PERSONAL WEBSITE" />
 
-            <!-- Web3Forms Access Key -->
-            <input type="hidden" name="access_key" value="2b49d5db-4ac0-477f-89bc-36ca322dad15" />
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div class="space-y-2">
+                        <label class="architectural-label">Full Name</label>
+                        <input type="text" name="name" required placeholder="Full Name"
+                            class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-soft-white focus:outline-none focus:border-muted-beige transition-colors" />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="architectural-label">Email Address</label>
+                        <input type="email" name="email" required placeholder="user@email.com"
+                            class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-soft-white focus:outline-none focus:border-muted-beige transition-colors" />
+                    </div>
+                </div>
 
-            <!-- Subject Line -->
-            <input type="hidden" name="subject" value="New Contact Form Submission - OKOYE MICAH PERSONAL WEBSITE" />
+                <div class="space-y-2 mb-6">
+                    <label class="architectural-label">Company/Brand Name</label>
+                    <input type="text" name="company" placeholder="Your Company"
+                        class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-soft-white focus:outline-none focus:border-muted-beige transition-colors" />
+                </div>
 
-            <!-- From Name -->
-            <input type="hidden" name="from_name" value="OKOYE MICAH PERSONAL WEBSITE" />
-
-            <!-- Reply To -->
-            <input type="hidden" name="replyto" value="" />
-
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label class="text-sm font-medium text-gray-400">Full Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  placeholder="Full Name"
-                  class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-white transition-colors"
-                />
-              </div>
-              <div class="space-y-2">
-                <label class="text-sm font-medium text-gray-400">Email Address</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  placeholder="email@gmail.com"
-                class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-white transition-colors"/>
-              </div>
-            </div>
-
-            <div class="space-y-2">
-              <label class="text-sm font-medium text-gray-400">Company Name</label>
-              <input
-                type="text"
-                name="company"
-                placeholder="Your Company"
-              class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-white transition-colors"/>
-            </div>
-
-            <div class="space-y-2">
-                <label class="text-sm font-medium text-gray-400">Service Interested In</label>
-                    <select
-                        class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-white transition-colors appearance-none">
+                <div class="space-y-2 mb-6">
+                    <label class="architectural-label">Service Interested In</label>
+                    <select name="service"
+                        class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-soft-white focus:outline-none focus:border-muted-beige transition-colors appearance-none">
                         <option>Frontend Development</option>
                         <option>UI/UX Design</option>
                         <option>Graphic Design</option>
+                        <option>IT Support</option>
                         <option>Others</option>
                     </select>
                 </div>
-              
-            <div class="space-y-2">
-              <label class="text-sm font-medium text-gray-400">Message</label>
-              <textarea
-                name="message"
-                required
-                rows="5"
-                placeholder="Tell us about your project..."
-                class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-white transition-colors"
-              ></textarea>
-            </div>
 
-            <!-- Honeypot Spam Protection -->
-            <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
+                <div class="space-y-2 mb-8">
+                    <label class="architectural-label">Message</label>
+                    <textarea name="message" required rows="5" placeholder="Tell us about your project..."
+                        class="w-full bg-brand-black border border-gray-800 rounded-xl px-5 py-4 text-soft-white focus:outline-none focus:border-muted-beige transition-colors"></textarea>
+                </div>
 
-            <button
-              type="submit"
-              class="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-all transform hover:scale-[1.02]"
-            >
-              Send Message <i class="fas fa-paper-plane ml-2"></i>
-            </button>
-          </form>
-        </div>
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
+
+                <button type="submit"
+                    class="w-full py-5 bg-white text-black font-display text-xs tracking-ultra-wide uppercase rounded-xl hover:bg-gray-200 transition-all transform hover:scale-[1.02] magnetic-target"
+                    data-cursor="hover">
+                    Send Message <i class="fas fa-paper-plane ml-2"></i>
+                </button>
+            </form>
 
             <div
-                class="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-6 reveal">
-                <div class="flex space-x-6">
-                    <a href="https://www.instagram.com/_guruuuu01/?utm_source=ig_web_button_share_sheet" class="text-gray-400 hover:text-white transition-colors text-xl"><i
-                            class="fab fa-instagram"></i></a>
-                    <a href="https://t.me/guruuuu01" class="text-gray-400 hover:text-white transition-colors text-xl"><i
-                            class="fab fa-telegram"></i></a>
-                    <a href="https://x.com/_guruuuu" class="text-gray-400 hover:text-white transition-colors text-xl"><i
-                            class="fab fa-twitter"></i></a>
-                    <a href="https://github.com/Design221" class="text-gray-400 hover:text-white transition-colors text-xl"><i
-                            class="fab fa-github"></i></a>
-                    <a href="https://www.facebook.com/okoye.micah.2025" class="text-gray-400 hover:text-white transition-colors text-xl"><i
-                            class="fab fa-facebook"></i></a>
-                    <a href="https://www.youtube.com/@guruuuuu01" class="text-gray-400 hover:text-white transition-colors text-xl"><i
-                            class="fab fa-youtube"></i></a>
+                class="mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex space-x-8">
+                    <a href="https://www.instagram.com/_guruuuu01/"
+                        class="text-metallic hover:text-soft-white transition-colors text-xl magnetic-target"
+                        data-cursor="hover"><i class="fab fa-instagram"></i></a>
+                    <a href="https://t.me/guruuuu01"
+                        class="text-metallic hover:text-soft-white transition-colors text-xl magnetic-target"
+                        data-cursor="hover"><i class="fab fa-telegram"></i></a>
+                    <a href="https://github.com/Design221"
+                        class="text-metallic hover:text-soft-white transition-colors text-xl magnetic-target"
+                        data-cursor="hover"><i class="fab fa-github"></i></a>
+                    <a href="https://www.facebook.com/okoye.micah.2025"
+                        class="text-metallic hover:text-soft-white transition-colors text-xl magnetic-target"
+                        data-cursor="hover"><i class="fab fa-facebook"></i></a>
+                    <div>
+                        <span class="architectural-label block mb-4">Location</span>
+                        <p class="text-soft-white text-sm font-light">Lagos / Nigeria</p>
+                    </div>
+                    <div>
+                        <span class="architectural-label block mb-4">Email</span>
+                        <p class="text-soft-white text-sm font-light">micahokoye788@gmail.com</p>
+                    </div>
                 </div>
-                <p class="text-gray-600 text-sm">© 2025 Micah Okoye. All rights reserved.</p>
+                <p class="text-metallic text-xs font-display tracking-ultra-wide uppercase">© 2025 Micah Okoye</p>
             </div>
         </div>
     </section>
 
-    <!-- Project Modal -->
+    <!-- ===== PREMIUM FEATURE 18: Project Modal ===== -->
     <div id="project-modal"
         class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
         <div
             class="modal-content bg-brand-black w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl border border-gray-800 shadow-2xl relative">
             <button id="close-modal"
-                class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
-                <i class="fas fa-times"></i>
+                class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors magnetic-target"
+                data-cursor="hover">
+                <i class="fas fa-times text-soft-white"></i>
             </button>
 
             <div class="h-64 md:h-96 w-full relative">
@@ -725,108 +1026,321 @@
 
             <div class="p-8 md:p-12">
                 <div class="flex flex-wrap gap-2 mb-4" id="modal-tags"></div>
-                <h2 id="modal-title" class="text-3xl md:text-4xl font-bold mb-4"></h2>
-                <p id="modal-desc" class="text-gray-400 text-lg leading-relaxed mb-8"></p>
+                <h2 id="modal-title" class="editorial-heading text-3xl md:text-4xl text-soft-white mb-4"></h2>
+                <p id="modal-desc" class="text-metallic text-lg leading-relaxed mb-8"></p>
 
                 <div class="bg-brand-gray rounded-2xl p-6 mb-8 border border-gray-800">
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-3">The Result</h3>
-                    <p id="modal-result" class="text-xl md:text-2xl font-medium text-white"></p>
+                    <h3 class="architectural-label mb-3">The Result</h3>
+                    <p id="modal-result" class="text-xl md:text-2xl font-medium text-soft-white"></p>
                 </div>
 
                 <div class="flex gap-4">
+                    <a href="#" id="modal-live" target="_blank"
+                        class="magnetic-btn px-8 py-4 bg-white text-black rounded-full font-display text-xs tracking-ultra-wide uppercase hover:bg-gray-200 transition-colors magnetic-target"
+                        data-cursor="hover">
+                        View Live Project
+                    </a>
                     <button
-                        class="px-6 py-3 bg-white text-black rounded-full font-bold hover:bg-gray-200 transition-colors">View
-                        Live Project</button>
-                    <button
-                        class="px-6 py-3 border border-gray-700 rounded-full font-bold hover:border-white transition-colors">Case
-                        Study</button>
+                        class="magnetic-btn px-8 py-4 border border-gray-700 rounded-full font-display text-xs tracking-ultra-wide uppercase text-soft-white hover:border-soft-white transition-colors magnetic-target"
+                        data-cursor="hover">
+                        Case Study
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // ===== PREMIUM FEATURE: GSAP Animations =====
+        gsap.registerPlugin(ScrollTrigger);
+
         // Data
         const projects = [
             {
                 id: 1,
                 title: "Nike UI Clone",
                 category: "UI/UX Design",
-                image: "./img/horizontal-1.jpg",
+                image: "./img/nike.png",
                 description: "A UI clone of Nike's website showcasing modern design principles. Built with React and Tailwind CSS, it features responsive layouts, smooth animations, and pixel-perfect styling to replicate the original site.",
                 result: "Used as a design reference by 5+ junior developers and received positive feedback for attention to detail.",
-                tags: ["React", "Tailwind CSS", "UI/UX", "Web Design"]
+                tags: ["UI/UX", "Figma", "React", "Tailwind CSS"],
+                liveUrl: "https://www.figma.com/design/f2n1k9aUaJrw4iYezp5K2W/NIKE-UI-Design?node-id=1-2&t=87gITE8p4ERSOzdm-1"
             },
             {
                 id: 2,
-                title: "Travel Agency Webpage",
+                title: "Alara Webpage Redesign",
                 category: "Frontend Development",
-                image: "./img/horizontal-3.jpg",
-                description: "Complete frontend development of a travel agency website with responsive design and modern UI elements.",
-                result: "Increased user engagement by 30% and reduced bounce rate by 15% within the first month of launch.",
-                tags: ["HTML", "CSS", "JavaScript", "Responsive Design"]
+                image: "./img/alara.jpg",
+                description: "Complete frontend redesign and development of a fashion brand's website, focusing on modern aesthetics, improved user experience, and enhanced performance.",
+                result: "Increased user engagement by 25% and improved average session duration by 20% within the first quarter after launch.",
+                tags: ["React", "Tailwind CSS", "JavaScript", "Responsive Design"],
+                liveUrl: "https://alara-lagos-demo-site.vercel.app/"
             },
             {
                 id: 3,
-                title: "Food Delivery UI/UX",
-                category: "Web Design",
-                image: "./img/horizontal-4.jpg",
-                description: "High-converting landing page for a proprietary trading firm. Focused on trust signals, clear CTAs, and mobile-first responsive design. Integrated with Stripe for instant checkout.",
-                result: "Achieved a 25% conversion rate and generated $50K+ in revenue within the first 3 months.",
-                tags: ["UI/UX", "Web Design", "Stripe API", "Conversion Optimization"]
+                title: "Hartleys Supermarket Redesign",
+                category: "Website Development",
+                image: "./img/hartleys.jpg",
+                description: "Complete website redesign and development for a local supermarket, focusing on improving user experience, streamlining the shopping process, and integrating an online ordering system.",
+                result: "Increased online sales by 30% and improved average session duration by 25% within the first quarter after launch.",
+                tags: ["React", "Tailwind CSS", "E-commerce", "Responsive Design"],
+                liveUrl: "https://hartleys-demo.vercel.app/"
             },
             {
                 id: 4,
-                title: "Hospital Webpage",
-                category: "Frontend Development",
-                image: "./img/horizontal-2.jpg",
-                description: "Complete frontend development of a hospital website with responsive design and modern UI elements.",
-                result: "Improved patient satisfaction scores by 25% and reduced support tickets by 30%.",
-                tags: ["HTML", "CSS", "JavaScript", "Responsive Design"]
+                title: "Hospital UI Webpage",
+                category: "UI/UX Design",
+                image: "./img/hospital.png",
+                description: "UI/UX design for a hospital website, focusing on creating an intuitive and user-friendly interface for patients and visitors. The design emphasizes clear navigation, easy access to information, and a calming aesthetic to enhance the user experience.",
+                result: "Received positive feedback for its user-friendly interface and clear information architecture.",
+                tags: ["UI/UX", "Figma", "Healthcare", "User-Centered Design"],
+                liveUrl: "https://www.figma.com/proto/8hfk5jPNSYfebA2RbhI8Jq/Hospital-Ui?node-id=552-1490&viewport=-37%2C405%2C0.12&t=6Ak7XGIhuFVnNaC4-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1"
             },
             {
                 id: 5,
-                title: "Furniture WebPage Design",
-                category: "Branding",
-                image: "./img/horizontal-6.jpg",
-                description: "Complete brand identity package for a luxury real estate agency. Included logo design, typography system, color palette, stationery, and digital asset guidelines.",
-                result: "Helped client secure 3 high-profile listings within the first month of rebranding and received praise for cohesive visual identity.",
-                tags: ["Branding", "Figma", "Typography", "Luxury"]
+                title: "Ashluxe Website Redesign",
+                category: "Website Design/Development",
+                image: "./img/ashluxe.jpg",
+                description: "Complete website redesign and development for a luxury fashion brand, focusing on creating a visually stunning and user-friendly online presence that reflects the brand's identity and values.",
+                result: "Increased user engagement by 35% and improved average session duration by 30% within the first quarter after launch.",
+                tags: ["React", "Tailwind CSS", "E-commerce", "Responsive Design"],
+                liveUrl: "https://ashluxe-demo-site.vercel.app/"
             },
             {
                 id: 6,
-                title: "Real Estate Website Design",
-                category: "Web Design",
-                image: "./img/horizontal-5.jpg",
-                description: "Complete frontend development of a real estate website with responsive design and modern UI elements.",
-                result: "Increased lead generation by 40% and improved user engagement by 35% within the first quarter.",
-                tags: ["HTML", "CSS", "JavaScript", "Responsive Design"]
+                title: "Ruff 'n' Tumble Website Design",
+                category: "Frontend Development",
+                image: "./img/ruff-n-tumble.jpg",
+                description: "Complete frontend redesign and development for a children's clothing brand, focusing on creating a playful and engaging online shopping experience that appeals to both parents and children.",
+                result: "Increased online sales by 40% and improved average session duration by 35% within the first quarter after launch.",
+                tags: ["React", "Tailwind CSS", "JavaScript", "Responsive Design"],
+                liveUrl: "https://ruff-n-tumble.vercel.app/"
             }
         ];
+
+        // ===== PREMIUM FEATURE 2: Loading Animation =====
+        const loader = document.getElementById('loader');
+        const loaderLine = document.getElementById('loaderLine');
+
+        const loadTl = gsap.timeline();
+        loadTl.to(loaderLine, {
+            width: '120px',
+            duration: 1.5,
+            ease: 'power2.inOut'
+        })
+            .to(loader, {
+                opacity: 0,
+                duration: 0.8,
+                delay: 0.3,
+                ease: 'power2.inOut',
+                onComplete: () => {
+                    loader.style.display = 'none';
+                    initAnimations();
+                }
+            });
+
+        // ===== PREMIUM FEATURE 1: Custom Cursor =====
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        let mouseX = 0, mouseY = 0;
+        let outlineX = 0, outlineY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        function animateCursor() {
+            outlineX += (mouseX - outlineX) * 0.15;
+            outlineY += (mouseY - outlineY) * 0.15;
+            cursorOutline.style.left = outlineX + 'px';
+            cursorOutline.style.top = outlineY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover states
+        document.querySelectorAll('[data-cursor="hover"]').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // ===== PREMIUM FEATURE 7: Magnetic Button Effect =====
+        document.querySelectorAll('.magnetic-target').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Main Animations
+        function initAnimations() {
+            // Hero Animations
+            gsap.to('#heroLabel', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.2,
+                ease: 'power3.out'
+            });
+
+            gsap.from('.hero-line', {
+                y: '100%',
+                duration: 1.2,
+                stagger: 0.15,
+                delay: 0.4,
+                ease: 'power3.out'
+            });
+
+            gsap.to('#heroSub', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.8,
+                ease: 'power3.out'
+            });
+
+            gsap.to('#heroCTA', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 1,
+                ease: 'power3.out'
+            });
+
+            gsap.to('#scrollIndicator', {
+                opacity: 1,
+                duration: 1,
+                delay: 1.5,
+                ease: 'power3.out'
+            });
+
+            // Navbar scroll behavior
+            let lastScroll = 0;
+            const navbar = document.getElementById('navbar');
+
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll > 100) {
+                    navbar.classList.add('glass');
+                    navbar.style.padding = '1.5rem 3rem';
+                } else {
+                    navbar.classList.remove('glass');
+                    navbar.style.padding = '';
+                }
+                lastScroll = currentScroll;
+            });
+
+            // About Section
+            gsap.utils.toArray('.about-reveal').forEach((el, i) => {
+                gsap.fromTo(el,
+                    {
+                        y: 40,
+                        opacity: 0
+                    },
+                    {
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 90%',
+                            toggleActions: 'play none none none'
+                        },
+                        y: 0,
+                        opacity: 1,
+                        duration: 1,
+                        delay: i * 0.15,
+                        ease: 'power3.out'
+                    }
+                );
+            });
+
+            // Parallax for About Image
+            gsap.to('#aboutImage', {
+                scrollTrigger: {
+                    trigger: '#about',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1
+                },
+                y: -50,
+                ease: 'none'
+            });
+
+            // Services Animation
+            gsap.utils.toArray('.service-item').forEach((item, i) => {
+                gsap.fromTo(item,
+                    {
+                        x: -30,
+                        opacity: 0
+                    },
+                    {
+                        scrollTrigger: {
+                            trigger: item,
+                            start: 'top 90%',
+                            toggleActions: 'play none none none'
+                        },
+                        x: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        delay: i * 0.1,
+                        ease: 'power3.out'
+                    }
+                );
+            });
+
+            // Process Animation
+            // Process items use IntersectionObserver (.reveal class)
+
+            // Contact Section
+            gsap.from('#contact h2', {
+                scrollTrigger: {
+                    trigger: '#contact',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 80,
+                opacity: 0,
+                duration: 1.2,
+                ease: 'power3.out'
+            });
+        }
 
         // Render Projects
         const projectsGrid = document.getElementById('projects-grid');
         projects.forEach((project, index) => {
             const card = document.createElement('div');
-            card.className = `group cursor-pointer reveal`;
+            card.className = `project-card group cursor-pointer reveal`;
             card.style.transitionDelay = `${index * 100}ms`;
             card.innerHTML = `
-                <div class="relative overflow-hidden rounded-2xl mb-4 img-zoom-container aspect-video bg-gray-800">
-                    <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover img-zoom">
-                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <span class="px-6 py-3 bg-white text-black rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform">View Project</span>
+                <div class="relative aspect-video overflow-hidden rounded-2xl mb-6 bg-gray-800">
+                    <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover">
+                    <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-end p-6">
+                        <span class="architectural-label text-soft-white">View Project</span>
                     </div>
                 </div>
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">${project.category}</p>
-                        <h3 class="text-xl font-bold group-hover:text-gray-300 transition-colors">${project.title}</h3>
+                        <p class="architectural-label text-[10px] mb-2">${project.category}</p>
+                        <h3 class="font-serif text-xl text-soft-white group-hover:text-muted-beige transition-colors">${project.title}</h3>
                     </div>
-                    <i class="fas fa-arrow-up-right text-gray-600 group-hover:text-white transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                    <i class="fas fa-arrow-up-right text-metallic group-hover:text-soft-white transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
                 </div>
             `;
             card.addEventListener('click', () => openModal(project));
+            card.setAttribute('data-cursor', 'hover');
             projectsGrid.appendChild(card);
+        });
+
+        // Re-initialize cursor for dynamically added elements
+        document.querySelectorAll('.project-card').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
         });
 
         // Modal Logic
@@ -838,12 +1352,13 @@
             document.getElementById('modal-title').textContent = project.title;
             document.getElementById('modal-desc').textContent = project.description;
             document.getElementById('modal-result').textContent = project.result;
+            document.getElementById('modal-live').href = project.liveUrl;
 
             const tagsContainer = document.getElementById('modal-tags');
             tagsContainer.innerHTML = '';
             project.tags.forEach(tag => {
                 const span = document.createElement('span');
-                span.className = 'px-3 py-1 bg-white/10 rounded-full text-xs font-medium';
+                span.className = 'px-3 py-1 bg-white/10 rounded-full text-xs font-medium text-soft-white';
                 span.textContent = tag;
                 tagsContainer.appendChild(span);
             });
@@ -865,7 +1380,7 @@
             if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
         });
 
-        // Scroll Animations (Intersection Observer)
+        // ===== PREMIUM FEATURE 10: Scroll Reveal Animation =====
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -875,79 +1390,55 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    observer.unobserve(entry.target); // Only animate once
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Navbar Scroll Effect
-        const navbar = document.getElementById('navbar');
-        let lastScroll = 0;
+        // Dedicated observer for experience section with staggered delays
+        const expObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = parseInt(entry.target.dataset.delay) || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('animate-in');
+                    }, delay * 100);
+                    expObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
 
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
+        document.querySelectorAll('.exp-reveal').forEach(el => expObserver.observe(el));
 
-            if (currentScroll > 50) {
-                navbar.classList.add('bg-brand-black/80', 'backdrop-blur-md', 'border-gray-800');
-                navbar.classList.remove('bg-transparent', 'border-transparent');
-            } else {
-                navbar.classList.remove('bg-brand-black/80', 'backdrop-blur-md', 'border-gray-800');
-                navbar.classList.add('bg-transparent', 'border-transparent');
-            }
-
-            lastScroll = currentScroll;
-        });
-
-        // Mobile Menu Toggle
+        // ===== PREMIUM FEATURE 15: Mobile Menu Animation =====
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
+        const menuLine1 = document.getElementById('menuLine1');
+        const menuLine2 = document.getElementById('menuLine2');
+        let menuOpen = false;
 
         mobileBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            const icon = mobileBtn.querySelector('i');
-            if (mobileMenu.classList.contains('hidden')) {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('active');
+
+            if (menuOpen) {
+                menuLine1.style.transform = 'rotate(45deg) translateY(4px)';
+                menuLine2.style.transform = 'rotate(-45deg) translateY(-4px)';
             } else {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
+                menuLine1.style.transform = '';
+                menuLine2.style.transform = '';
             }
         });
 
-        // Close mobile menu on link click
-        mobileMenu.querySelectorAll('a').forEach(link => {
+        document.querySelectorAll('.mobile-link').forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                mobileBtn.querySelector('i').classList.remove('fa-times');
-                mobileBtn.querySelector('i').classList.add('fa-bars');
+                menuOpen = false;
+                mobileMenu.classList.remove('active');
+                menuLine1.style.transform = '';
+                menuLine2.style.transform = '';
             });
-        });
-
-        // Contact Form Handler
-        document.getElementById('contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const originalText = btn.innerHTML;
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            btn.disabled = true;
-
-            // Simulate API call
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                btn.classList.remove('bg-white', 'text-black');
-                btn.classList.add('bg-green-500', 'text-white');
-
-                setTimeout(() => {
-                    e.target.reset();
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                    btn.classList.add('bg-white', 'text-black');
-                    btn.classList.remove('bg-green-500', 'text-white');
-                }, 3000);
-            }, 1500);
         });
 
         // Smooth Scroll for Anchor Links
@@ -963,6 +1454,21 @@
                 }
             });
         });
+
+        // Debug: Log experience section observer status
+        console.log('Experience items found:', document.querySelectorAll('.exp-reveal').length);
+        console.log('Observer threshold:', 0.05);
+
+        // Force animate all experience items after 3 seconds as fallback
+        setTimeout(() => {
+            document.querySelectorAll('.exp-reveal').forEach((el, i) => {
+                if (!el.classList.contains('animate-in')) {
+                    console.log('Fallback animation for item', i);
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }
+            });
+        }, 3000);
     </script>
 </body>
 
